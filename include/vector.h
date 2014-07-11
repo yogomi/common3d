@@ -5,25 +5,31 @@
 
 namespace common3d {
 
-template<typename TYPE>class Vector {
+class Vector {
  public:
   Vector(): x_(0), y_(0), z_(0) {}
-  Vector(const TYPE x, const TYPE y, const TYPE z)
+  Vector(const float x, const float y, const float z)
     : x_(x), y_(y), z_(z) {}
   ~Vector() {}
 
-  TYPE x() const {
+  float x() const {
     return x_;
   }
-  TYPE y() const {
+  float y() const {
     return y_;
   }
-  TYPE z() const {
+  float z() const {
     return z_;
   }
+
+  float Magnitude() const;
+  float MagnitudeSquared() const;
+  void Normalize();
  private:
-  TYPE x_, y_, z_;
+  float x_, y_, z_;
 };
+
+Vector Normalize(const Vector &v);
 
 }  // namespace common3d
 
