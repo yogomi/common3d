@@ -3,6 +3,8 @@
 #ifndef COMMON3D_INCLUDE_VECTOR_H_  // NOLINT
 #define COMMON3D_INCLUDE_VECTOR_H_  // NOLINT
 
+#include <list>
+
 namespace common3d {
 
 class Vector {
@@ -32,6 +34,8 @@ class Vector {
  private:
   float x_, y_, z_;
 };
+
+typedef std::list<Vector> VectorList;
 
 Vector Normalize(const Vector &v);
 

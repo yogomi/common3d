@@ -1,12 +1,16 @@
 // Copyright 2014 Makoto Yano
 
 #include <cstdint>
+#include <map>
 
-#include "include/vector.h"
+#include "./vector.h"
+#include "./point_in_block.h"
 
-typedef common3d::Vector<uint32_t> vec;
 
 int main() {
-  vec v;
+  common3d::BlockId b = {1,2,3};
+  common3d::BlockId a = {1,2,3};
+  std::map<common3d::BlockId, common3d::VectorList> block;
+
   return 0;
 }

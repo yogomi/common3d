@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "include/vector.h"
+#include "./vector.h"
 
 namespace common3d {
 
