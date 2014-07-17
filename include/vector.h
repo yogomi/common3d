@@ -1,7 +1,7 @@
 // Copyright 2014 Makoto Yano
 
-#ifndef COMMON3D_INCLUDE_VECTOR_H_
-#define COMMON3D_INCLUDE_VECTOR_H_
+#ifndef COMMON3D_INCLUDE_VECTOR_H_  // NOLINT
+#define COMMON3D_INCLUDE_VECTOR_H_  // NOLINT
 
 namespace common3d {
 
@@ -22,9 +22,13 @@ class Vector {
     return z_;
   }
 
+  bool operator<(const Vector &v) const {
+    return (v.x() < x_ && v.y() < y_ && v.z() < z_);
+  }
   float Magnitude() const;
   float MagnitudeSquared() const;
   void Normalize();
+
  private:
   float x_, y_, z_;
 };
@@ -33,4 +37,4 @@ Vector Normalize(const Vector &v);
 
 }  // namespace common3d
 
-#endif  // COMMON3D_INCLUDE_VECTOR_H_
+#endif  // COMMON3D_INCLUDE_VECTOR_H_  // NOLINT
