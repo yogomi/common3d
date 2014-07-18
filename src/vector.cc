@@ -6,25 +6,32 @@
 
 namespace common3d {
 
+float Vector::DistanceTo(const Vector &v) const {
+  struct ExiguousVector other = v.Coordinate();
+  return std::sqrt((v_.x - other.x)*(v_.x - other.x) +
+                  (v_.y - other.y)*(v_.y - other.y) +
+                  (v_.z - other.z)*(v_.z - other.z));
+}
+
 float Vector::Magnitude() const {
-  return std::sqrt(x_*x_ + y_*y_ + z_*z_);
+  return std::sqrt(v_.x*v_.x + v_.y*v_.y + v_.z*v_.z);
 }
 
 float Vector::MagnitudeSquared() const {
-  return x_*x_ + y_*y_ + z_*z_;
+  return v_.x*v_.x + v_.y*v_.y + v_.z*v_.z;
 }
 
 void Vector::Normalize() {
   float denom = MagnitudeSquared();
   if (denom <= 0.0f) {
-    x_ = 0;
-    y_ = 0;
-    z_ = 0;
+    v_.x = 0;
+    v_.y = 0;
+    v_.z = 0;
   } else {
     denom = 1.0f / std::sqrt(denom);
-    x_ = x_ * denom;
-    y_ = y_ * denom;
-    z_ = z_ * denom;
+    v_.x = v_.x * denom;
+    v_.y = v_.y * denom;
+    v_.z = v_.z * denom;
   }
 }
 

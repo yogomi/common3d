@@ -1,0 +1,44 @@
+// Copyright 2014 Makoto Yano
+
+#ifndef INCLUDE_POINT_IN_BLOCK_H_
+#define INCLUDE_POINT_IN_BLOCK_H_
+
+#include <list>
+#include <map>
+
+#include "./vector.h"
+
+namespace common3d {
+
+struct BlockId {
+  int64_t x, y, z;
+  bool operator<(const BlockId &id) const {
+    return (id.x < x && id.y < y && id.z < z);
+  }
+};
+
+typedef std::list<BlockId> BlockIdList;
+
+typedef std::map<float, VectorList> NeighborhoodMap;
+
+typedef std::map<Vector, NeighborhoodMap> VectorTown_;
+
+class BlockGrid {
+ public:
+  BlockGrid():grid_scale_(1.0f) {}
+  explicit BlockGrid(float scale):grid_scale_(scale) {}
+  ~BlockGrid() {}
+  void AddVector(const Vector &address);
+
+ private:
+  struct BlockId GetBlockId(const Vector &address) const;
+  void NoticeNewHouseToTown_(const Vector &address
+                          , VectorTown_ &town);  // NOLINT
+
+  float grid_scale_;
+  std::map<BlockId, VectorTown_> grid_;
+};
+
+}  // namespace common3d
+
+#endif  // INCLUDE_POINT_IN_BLOCK_H_

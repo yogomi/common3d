@@ -7,32 +7,40 @@
 
 namespace common3d {
 
+struct ExiguousVector {
+  float x, y, z;
+};
+
 class Vector {
  public:
-  Vector(): x_(0), y_(0), z_(0) {}
+  Vector(): v_({0, 0, 0}) {}
   Vector(const float x, const float y, const float z)
-    : x_(x), y_(y), z_(z) {}
+    : v_({x, y, z}) {}
   ~Vector() {}
 
   float x() const {
-    return x_;
+    return v_.x;
   }
   float y() const {
-    return y_;
+    return v_.y;
   }
   float z() const {
-    return z_;
+    return v_.z;
+  }
+  struct ExiguousVector Coordinate() const {
+    return v_;
   }
 
   bool operator<(const Vector &v) const {
-    return (v.x() < x_ && v.y() < y_ && v.z() < z_);
+    return (v.x() < v_.x && v.y() < v_.y && v.z() < v_.z);
   }
+  float DistanceTo(const Vector &v) const;
   float Magnitude() const;
   float MagnitudeSquared() const;
   void Normalize();
 
  private:
-  float x_, y_, z_;
+  struct ExiguousVector v_;
 };
 
 typedef std::list<Vector> VectorList;

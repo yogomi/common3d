@@ -4,13 +4,13 @@
 #include <map>
 
 #include "./vector.h"
-#include "./point_in_block.h"
+#include "./neighborhood_map.h"
 
 
 int main() {
-  common3d::BlockId b = {1,2,3};
-  common3d::BlockId a = {1,2,3};
-  std::map<common3d::BlockId, common3d::VectorList> block;
+  common3d::Vector v;
+  common3d::BlockGrid grid;
+  grid.AddVector(v);
 
   return 0;
 }
