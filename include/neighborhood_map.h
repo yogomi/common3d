@@ -1,7 +1,7 @@
 // Copyright 2014 Makoto Yano
 
-#ifndef INCLUDE_POINT_IN_BLOCK_H_
-#define INCLUDE_POINT_IN_BLOCK_H_
+#ifndef INCLUDE_NEIGHBORHOOD_MAP_H_
+#define INCLUDE_NEIGHBORHOOD_MAP_H_
 
 #include <list>
 #include <map>
@@ -41,4 +41,4 @@ class BlockGrid {
 
 }  // namespace common3d
 
-#endif  // INCLUDE_POINT_IN_BLOCK_H_
+#endif  // INCLUDE_NEIGHBORHOOD_MAP_H_

@@ -29,11 +29,10 @@ struct BlockId BlockGrid::GetBlockId(const Vector &address) const {
 void BlockGrid::NoticeNewHouseToTown_(const Vector &address
                           , VectorTown_ &town) {  // NOLINT
   BlockId home_town = GetBlockId(address);
-  for (VectorTown_::iterator neighbor_house = town.begin();
-      neighbor_house != town.end(); neighbor_house++) {
-    float distance = neighbor_house->first.DistanceTo(address);
-    neighbor_house->second[distance].push_back(address);
-    grid_[home_town][address][distance].push_back(neighbor_house->first);
+  for (auto& neighbor_house : town) {
+    float distance = neighbor_house.first.DistanceTo(address);
+    neighbor_house.second[distance].push_back(address);
+    grid_[home_town][address][distance].push_back(neighbor_house.first);
   }
 }
 
