@@ -7,7 +7,7 @@
 
 namespace common3d {
 
-struct ExiguousVector {
+struct MinimumElementVector {
   float x, y, z;
 };
 
@@ -27,7 +27,7 @@ class Vector {
   float z() const {
     return v_.z;
   }
-  struct ExiguousVector Coordinate() const {
+  struct MinimumElementVector Coordinate() const {
     return v_;
   }
 
@@ -40,7 +40,7 @@ class Vector {
   void Normalize();
 
  private:
-  struct ExiguousVector v_;
+  struct MinimumElementVector v_;
 };
 
 typedef std::list<Vector> VectorList;

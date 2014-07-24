@@ -7,7 +7,7 @@
 namespace common3d {
 
 float Vector::DistanceTo(const Vector &v) const {
-  struct ExiguousVector other = v.Coordinate();
+  struct MinimumElementVector other = v.Coordinate();
   return std::sqrt((v_.x - other.x)*(v_.x - other.x) +
                   (v_.y - other.y)*(v_.y - other.y) +
                   (v_.z - other.z)*(v_.z - other.z));
