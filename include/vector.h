@@ -31,8 +31,23 @@ class Vector {
     return v_;
   }
 
+  bool operator==(const Vector &v) const {
+    return (v_.x == v.x() && v_.y == v.y() && v_.z == v.z());
+  }
+
   bool operator<(const Vector &v) const {
-    return (v.x() < v_.x && v.y() < v_.y && v.z() < v_.z);
+    float left = MagnitudeSquared();
+    float right = v.MagnitudeSquared();
+    if (left == right) {
+      if (v_.x != v.x()) {
+        return v_.x - v.x();
+      } else if (v_.y != v.y()) {
+        return v_.y - v.y();
+      } else if (v_.z != v.z()) {
+        return v_.z - v.z();
+      }
+    }
+    return left < right;
   }
   float DistanceTo(const Vector &v) const;
   float Magnitude() const;
