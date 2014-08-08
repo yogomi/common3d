@@ -49,6 +49,16 @@ class Vector {
     }
     return left < right;
   }
+
+  Vector operator+(const Vector &v) const {
+    return Vector(v_.x + v.x(), v_.y + v.y(), v_.z + v.z());
+  }
+  Vector operator-(const Vector &v) const {
+    return Vector(v_.x - v.x(), v_.y - v.y(), v_.z - v.z());
+  }
+  Vector operator-() const {
+    return Vector(-v_.x, -v_.y, -v_.z);
+  }
   float DistanceTo(const Vector &v) const;
   float Magnitude() const;
   float MagnitudeSquared() const;
