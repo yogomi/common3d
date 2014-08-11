@@ -29,11 +29,16 @@ class BlockGrid {
   explicit BlockGrid(float scale):grid_scale_(scale) {}
   ~BlockGrid() {}
   void AddVector(const Vector &address);
+  NeighborhoodMap GetNeighborsDistanceMap(const Vector &address);
+  void RemoveVector(const Vector &address);
 
  private:
   struct BlockId GetBlockId(const Vector &address) const;
   void NoticeNewHouseToTown_(const Vector &address
                           , VectorTown_ &town);  // NOLINT
+  void RemoveHouseInformationFromTown_(const Vector &address
+                          , VectorTown_ &town);  // NOLINT
+  NeighborhoodMap CreateDistanceMap_(const Vector &address);
 
   float grid_scale_;
   std::map<BlockId, VectorTown_> grid_;

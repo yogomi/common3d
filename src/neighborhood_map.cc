@@ -17,6 +17,26 @@ void BlockGrid::AddVector(const Vector &address) {
       , [&](const BlockId &neighbor_town_id) {  // NOLINT
     NoticeNewHouseToTown_(address, grid_[neighbor_town_id]);
   });
+  grid_[id][address][0.0f].push_back(address);
+}
+
+NeighborhoodMap BlockGrid::GetNeighborsDistanceMap(const Vector &address) {
+  struct BlockId id = GetBlockId(address);
+  if (grid_[id].find(address) != grid_[id].end()) {
+    return grid_[id][address];
+  } else {
+    return CreateDistanceMap_(address);
+  }
+}
+
+void BlockGrid::RemoveVector(const Vector &address) {
+  struct BlockId id = GetBlockId(address);
+  BlockIdList neighbor_ids = NeighborhoodBlockIds(id);
+  for_each(neighbor_ids.begin(), neighbor_ids.end()
+      , [&](const BlockId &neighbor_town_id) {  // NOLINT
+    RemoveHouseInformationFromTown_(address, grid_[neighbor_town_id]);
+  });
+  grid_[id].erase(address);
 }
 
 struct BlockId BlockGrid::GetBlockId(const Vector &address) const {
@@ -34,6 +54,35 @@ void BlockGrid::NoticeNewHouseToTown_(const Vector &address
     neighbor_house.second[distance].push_back(address);
     grid_[home_town][address][distance].push_back(neighbor_house.first);
   }
+}
+
+void BlockGrid::RemoveHouseInformationFromTown_(const Vector &address
+                          , VectorTown_ &town) {  // NOLINT
+  for (auto& neighbor_house : town) {
+    float distance = neighbor_house.first.DistanceTo(address);
+    neighbor_house.second[distance].remove(address);
+  }
+}
+
+NeighborhoodMap BlockGrid::CreateDistanceMap_(const Vector &address) {
+  struct BlockId home_id = GetBlockId(address);
+  BlockIdList neighbor_ids = NeighborhoodBlockIds(home_id);
+  NeighborhoodMap DistanceMap;
+
+  auto CalculateDistance = [&](const struct BlockId &id) {  // NOLINT
+    for (auto& neighbor_house : grid_[id]) {
+      float distance = neighbor_house.first.DistanceTo(address);
+      DistanceMap[distance].push_back(address);
+    }
+  };
+
+  for_each(neighbor_ids.begin()
+          , neighbor_ids.end()
+          , [&CalculateDistance](const struct BlockId &id) {
+    CalculateDistance(id);
+  });
+
+  return DistanceMap;
 }
 
 BlockIdList NeighborhoodBlockIds(const BlockId &id) {
