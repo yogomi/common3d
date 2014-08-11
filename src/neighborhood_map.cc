@@ -72,7 +72,7 @@ NeighborhoodMap BlockGrid::CreateDistanceMap_(const Vector &address) {
   auto CalculateDistance = [&](const struct BlockId &id) {  // NOLINT
     for (auto& neighbor_house : grid_[id]) {
       float distance = neighbor_house.first.DistanceTo(address);
-      DistanceMap[distance].push_back(address);
+      DistanceMap[distance].push_back(neighbor_house.first);
     }
   };
 
@@ -81,6 +81,8 @@ NeighborhoodMap BlockGrid::CreateDistanceMap_(const Vector &address) {
           , [&CalculateDistance](const struct BlockId &id) {
     CalculateDistance(id);
   });
+
+  DistanceMap[0.0f].push_back(address);
 
   return DistanceMap;
 }
