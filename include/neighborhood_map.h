@@ -3,6 +3,7 @@
 #ifndef INCLUDE_NEIGHBORHOOD_MAP_H_
 #define INCLUDE_NEIGHBORHOOD_MAP_H_
 
+#include <cstdint>
 #include <list>
 #include <map>
 
