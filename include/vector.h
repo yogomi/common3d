@@ -31,6 +31,12 @@ class Vector {
     return v_;
   }
 
+  void operator=(const Vector &v) {
+    v_.x = v.x();
+    v_.y = v.y();
+    v_.z = v.z();
+  }
+
   bool operator==(const Vector &v) const {
     return (v_.x == v.x() && v_.y == v.y() && v_.z == v.z());
   }
