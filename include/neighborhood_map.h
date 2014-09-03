@@ -14,7 +14,21 @@ namespace common3d {
 struct BlockId {
   int64_t x, y, z;
   bool operator<(const BlockId &id) const {
-    return (id.x < x && id.y < y && id.z < z);
+    int64_t self_m = x*x + y*y + z*z;
+    int64_t m = id.x*id.x + id.y*id.y + id.z*id.z;
+    if (self_m == m) {
+      if (x != id.x) {
+        return x < id.x;
+      } else if (y != id.y) {
+        return y < id.y;
+      } else if (z != id.z) {
+        return z < id.z;
+      }
+    }
+    return self_m < m;
+  }
+  bool operator==(const BlockId &id) const {
+    return (id.x == x && id.y == y && id.z == z);
   }
 };
 
