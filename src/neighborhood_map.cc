@@ -13,55 +13,69 @@ namespace common3d {
 
 BlockIdList NeighborhoodBlockIds(const BlockId &id);
 
-void BlockGrid::AddVector(const Eigen::Vector3f &address) {
+void BlockGrid::AddVector(const Eigen::Vector3f &vector) {
+  AddVector(ComparableVector3f(vector));
+}
+
+void BlockGrid::AddVector(const ComparableVector3f &address) {
   struct BlockId id = GetBlockId(address);
   BlockIdList neighbor_ids = NeighborhoodBlockIds(id);
   for_each(neighbor_ids.begin(), neighbor_ids.end()
       , [&](const BlockId &neighbor_town_id) {  // NOLINT
     NoticeNewHouseToTown_(address, grid_[neighbor_town_id]);
   });
-  grid_[id][ComparableVector3f(address)][0.0f].push_back(address);
+  grid_[id][address][0.0f].push_back(address);
 }
 
 NeighborhoodMap BlockGrid::GetNeighborsDistanceMap(
-                                              const Eigen::Vector3f &address) {
+                                              const Eigen::Vector3f &vector) {
+  return GetNeighborsDistanceMap(ComparableVector3f(vector));
+}
+
+NeighborhoodMap BlockGrid::GetNeighborsDistanceMap(
+                                          const ComparableVector3f &address) {
   struct BlockId id = GetBlockId(address);
-  if (grid_[id].find(ComparableVector3f(address)) != grid_[id].end()) {
-    return grid_[id][ComparableVector3f(address)];
+  if (grid_[id].find(address) != grid_[id].end()) {
+    return grid_[id][address];
   } else {
     return CreateDistanceMap_(address);
   }
 }
 
-void BlockGrid::RemoveVector(const Eigen::Vector3f &address) {
+void BlockGrid::RemoveVector(const Eigen::Vector3f &vector) {
+  RemoveVector(ComparableVector3f(vector));
+}
+
+void BlockGrid::RemoveVector(const ComparableVector3f &address) {
   struct BlockId id = GetBlockId(address);
   BlockIdList neighbor_ids = NeighborhoodBlockIds(id);
   for_each(neighbor_ids.begin(), neighbor_ids.end()
       , [&](const BlockId &neighbor_town_id) {  // NOLINT
     RemoveHouseInformationFromTown_(address, grid_[neighbor_town_id]);
   });
-  grid_[id].erase(ComparableVector3f(address));
+  grid_[id].erase(address);
 }
 
-struct BlockId BlockGrid::GetBlockId(const Eigen::Vector3f &address) const {
+struct BlockId BlockGrid::GetBlockId(const ComparableVector3f &address) const {
   BlockId id = {static_cast<int64_t>(address.x() / grid_scale_)
               , static_cast<int64_t>(address.y() / grid_scale_)
               , static_cast<int64_t>(address.z() / grid_scale_)};
   return id;
 }
 
-void BlockGrid::NoticeNewHouseToTown_(const Eigen::Vector3f &address
+void BlockGrid::NoticeNewHouseToTown_(const ComparableVector3f &address
                           , VectorTown_ &town) {  // NOLINT
   BlockId home_town = GetBlockId(address);
   for (auto& neighbor_house : town) {
     float distance = (neighbor_house.first - address).norm();
     neighbor_house.second[distance].push_back(address);
-    grid_[home_town][ComparableVector3f(address)][distance].push_back(
+    grid_[home_town][address][distance].push_back(
                                                         neighbor_house.first);
   }
 }
 
-void BlockGrid::RemoveHouseInformationFromTown_(const Eigen::Vector3f &address
+void BlockGrid::RemoveHouseInformationFromTown_(
+                          const ComparableVector3f &address
                           , VectorTown_ &town) {  // NOLINT
   for (auto& neighbor_house : town) {
     float distance = (neighbor_house.first - address).norm();
@@ -69,7 +83,8 @@ void BlockGrid::RemoveHouseInformationFromTown_(const Eigen::Vector3f &address
   }
 }
 
-NeighborhoodMap BlockGrid::CreateDistanceMap_(const Eigen::Vector3f &address) {
+NeighborhoodMap BlockGrid::CreateDistanceMap_(
+                                          const ComparableVector3f &address) {
   struct BlockId home_id = GetBlockId(address);
   BlockIdList neighbor_ids = NeighborhoodBlockIds(home_id);
   NeighborhoodMap DistanceMap;

@@ -36,9 +36,9 @@ struct BlockId {
 
 typedef std::list<BlockId> BlockIdList;
 
-typedef std::list<Eigen::Vector3f> _Vector3fList;
+typedef std::list<ComparableVector3f> _ComparableVector3fList;
 
-typedef std::map<float, _Vector3fList> NeighborhoodMap;
+typedef std::map<float, _ComparableVector3fList> NeighborhoodMap;
 
 typedef std::map<ComparableVector3f, NeighborhoodMap> VectorTown_;
 
@@ -47,17 +47,20 @@ class BlockGrid {
   BlockGrid():grid_scale_(1.0f) {}
   explicit BlockGrid(float scale):grid_scale_(scale) {}
   ~BlockGrid() {}
-  void AddVector(const Eigen::Vector3f &address);
-  NeighborhoodMap GetNeighborsDistanceMap(const Eigen::Vector3f &address);
-  void RemoveVector(const Eigen::Vector3f &address);
+  void AddVector(const Eigen::Vector3f &vector);
+  void AddVector(const ComparableVector3f &address);
+  NeighborhoodMap GetNeighborsDistanceMap(const Eigen::Vector3f &vector);
+  NeighborhoodMap GetNeighborsDistanceMap(const ComparableVector3f &address);
+  void RemoveVector(const Eigen::Vector3f &vector);
+  void RemoveVector(const ComparableVector3f &address);
 
  private:
-  struct BlockId GetBlockId(const Eigen::Vector3f &address) const;
-  void NoticeNewHouseToTown_(const Eigen::Vector3f &address
+  struct BlockId GetBlockId(const ComparableVector3f &address) const;
+  void NoticeNewHouseToTown_(const ComparableVector3f &address
                           , VectorTown_ &town);  // NOLINT
-  void RemoveHouseInformationFromTown_(const Eigen::Vector3f &address
+  void RemoveHouseInformationFromTown_(const ComparableVector3f &address
                           , VectorTown_ &town);  // NOLINT
-  NeighborhoodMap CreateDistanceMap_(const Eigen::Vector3f &address);
+  NeighborhoodMap CreateDistanceMap_(const ComparableVector3f &address);
 
   float grid_scale_;
   std::map<BlockId, VectorTown_> grid_;
