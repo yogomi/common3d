@@ -3,6 +3,8 @@
 #ifndef INCLUDE_NEIGHBORHOOD_MAP_H_
 #define INCLUDE_NEIGHBORHOOD_MAP_H_
 
+#include <Eigen/Core>
+
 #include <cstdint>
 #include <list>
 #include <map>
@@ -34,26 +36,28 @@ struct BlockId {
 
 typedef std::list<BlockId> BlockIdList;
 
-typedef std::map<float, VectorList> NeighborhoodMap;
+typedef std::list<Eigen::Vector3f> _Vector3fList;
 
-typedef std::map<Vector, NeighborhoodMap> VectorTown_;
+typedef std::map<float, _Vector3fList> NeighborhoodMap;
+
+typedef std::map<ComparableVector3f, NeighborhoodMap> VectorTown_;
 
 class BlockGrid {
  public:
   BlockGrid():grid_scale_(1.0f) {}
   explicit BlockGrid(float scale):grid_scale_(scale) {}
   ~BlockGrid() {}
-  void AddVector(const Vector &address);
-  NeighborhoodMap GetNeighborsDistanceMap(const Vector &address);
-  void RemoveVector(const Vector &address);
+  void AddVector(const Eigen::Vector3f &address);
+  NeighborhoodMap GetNeighborsDistanceMap(const Eigen::Vector3f &address);
+  void RemoveVector(const Eigen::Vector3f &address);
 
  private:
-  struct BlockId GetBlockId(const Vector &address) const;
-  void NoticeNewHouseToTown_(const Vector &address
+  struct BlockId GetBlockId(const Eigen::Vector3f &address) const;
+  void NoticeNewHouseToTown_(const Eigen::Vector3f &address
                           , VectorTown_ &town);  // NOLINT
-  void RemoveHouseInformationFromTown_(const Vector &address
+  void RemoveHouseInformationFromTown_(const Eigen::Vector3f &address
                           , VectorTown_ &town);  // NOLINT
-  NeighborhoodMap CreateDistanceMap_(const Vector &address);
+  NeighborhoodMap CreateDistanceMap_(const Eigen::Vector3f &address);
 
   float grid_scale_;
   std::map<BlockId, VectorTown_> grid_;

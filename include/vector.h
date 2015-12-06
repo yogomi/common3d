@@ -1,83 +1,51 @@
 // Copyright 2014 Makoto Yano
+//
+// EigenのVector3fの派生させる場合はここに記述する
 
 #ifndef COMMON3D_INCLUDE_VECTOR_H_  // NOLINT
 #define COMMON3D_INCLUDE_VECTOR_H_  // NOLINT
 
-#include <list>
+#include <Eigen/Core>
 
 namespace common3d {
 
+// ファイルへ入出力用の最小ベクトル単位
 struct MinimumElementVector {
   float x, y, z;
 };
 
-class Vector {
+// 比較演算子を使えるようにしてstdのmapへキーとして渡せるようにしたVector3f
+class ComparableVector3f : public Eigen::Vector3f {
  public:
-  Vector(): v_({0, 0, 0}) {}
-  Vector(const float x, const float y, const float z)
-    : v_({x, y, z}) {}
-  ~Vector() {}
+  ComparableVector3f() {}
+  ~ComparableVector3f() {}
 
-  float x() const {
-    return v_.x;
-  }
-  float y() const {
-    return v_.y;
-  }
-  float z() const {
-    return v_.z;
-  }
-  struct MinimumElementVector Coordinate() const {
-    return v_;
+  ComparableVector3f(const float x, const float y, const float z)
+    : Eigen::Vector3f(x, y, z) {}
+  ComparableVector3f(const ComparableVector3f& address)
+    : Eigen::Vector3f(address) {}
+  explicit ComparableVector3f(const Eigen::Vector3f& vector)
+    : Eigen::Vector3f(vector) {}
+  ComparableVector3f& operator=(const ComparableVector3f& vector) {
+    Eigen::Vector3f::operator=(vector);
+    return *this;
   }
 
-  void operator=(const Vector &v) {
-    v_.x = v.x();
-    v_.y = v.y();
-    v_.z = v.z();
-  }
-
-  bool operator==(const Vector &v) const {
-    return (v_.x == v.x() && v_.y == v.y() && v_.z == v.z());
-  }
-
-  bool operator<(const Vector &v) const {
-    float left = MagnitudeSquared();
-    float right = v.MagnitudeSquared();
+  bool operator<(const ComparableVector3f &v) const {
+    float left = this->squaredNorm();
+    float right = v.squaredNorm();
     if (left == right) {
-      if (v_.x != v.x()) {
-        return v_.x - v.x();
-      } else if (v_.y != v.y()) {
-        return v_.y - v.y();
-      } else if (v_.z != v.z()) {
-        return v_.z - v.z();
+      if (this->x() != v.x()) {
+        return this->x() - v.x();
+      } else if (this->y() != v.y()) {
+        return this->y() - v.y();
+      } else if (this->z() != v.z()) {
+        return this->z() - v.z();
       }
     }
     return left < right;
   }
-
-  Vector operator+(const Vector &v) const {
-    return Vector(v_.x + v.x(), v_.y + v.y(), v_.z + v.z());
-  }
-  Vector operator-(const Vector &v) const {
-    return Vector(v_.x - v.x(), v_.y - v.y(), v_.z - v.z());
-  }
-  Vector operator-() const {
-    return Vector(-v_.x, -v_.y, -v_.z);
-  }
-  float DistanceTo(const Vector &v) const;
-  float Magnitude() const;
-  float MagnitudeSquared() const;
-  void Normalize();
-
- private:
-  struct MinimumElementVector v_;
 };
-
-typedef std::list<Vector> VectorList;
-
-Vector Normalize(const Vector &v);
-
 }  // namespace common3d
 
 #endif  // COMMON3D_INCLUDE_VECTOR_H_  // NOLINT

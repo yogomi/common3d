@@ -3,12 +3,13 @@
 #ifndef COMMON3D_INCLUDE_CUBE_H_  // NOLINT
 #define COMMON3D_INCLUDE_CUBE_H_  // NOLINT
 
-#include "./vector.h"
+#include <Eigen/Core>
 
 namespace common3d {
 
-float CubeVolumeFromBothEndVertix(const Vector &from, const Vector &to);
+float CubeVolumeFromBothEndVertix(const Eigen::Vector3f &from
+                                , const Eigen::Vector3f &to);
 
 }  // namespace common3d
 
-#endif  // COMMON3D_INCLUDE_VECTOR_H_  // NOLINT
+#endif  // COMMON3D_INCLUDE_CUBE_H_  // NOLINT

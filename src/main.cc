@@ -1,14 +1,14 @@
 // Copyright 2014 Makoto Yano
 
+#include <Eigen/Core>
 #include <cstdint>
 #include <map>
 
-#include "./vector.h"
 #include "./neighborhood_map.h"
 
 
 int main() {
-  common3d::Vector v;
+  Eigen::Vector3f v;
   common3d::BlockGrid grid;
   grid.AddVector(v);
 
